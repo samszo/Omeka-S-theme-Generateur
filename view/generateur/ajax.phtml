@@ -1,0 +1,20 @@
+<?php
+error_reporting(E_ERROR | E_PARSE);
+$helper = $this->params()->fromQuery('helper','');
+$log = $this->logger();
+$rs=null;
+$user = $this->identity();
+
+switch ($helper) {
+    case 'sql':
+        $params = $this->params()->fromQuery();
+        $rs = $this->generateurSql($params);
+        echo $this->json($rs);                
+        break;
+}
+
+
+?>
+
+
+
