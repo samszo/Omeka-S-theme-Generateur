@@ -1,5 +1,13 @@
 <?php
-header('Content-Type: application/json; charset=utf-8');
+$export = $this->params()->fromQuery('export', '');
+$action = $this->params()->fromQuery('action', '');
+if($export=="csv"){
+    //header('Expires: 0');  
+    //header('Cache-Control: no-cache');    
+    header("Content-disposition: attachment; filename=".$action.".csv");
+    header('Content-type: text/csv; charset=utf-8');
+}else
+    header('Content-Type: application/json; charset=utf-8');
 error_reporting(E_ERROR | E_PARSE);
 $helper = $this->params()->fromQuery('helper','');
 $log = $this->logger();
@@ -10,7 +18,10 @@ switch ($helper) {
     case 'sql':
         $params = $this->params()->fromQuery();
         $rs = $this->GenerateurSql($params);
-        echo $this->json($rs);                
+        if($export=="csv")
+            echo $rs;                
+        else
+            echo $this->json($rs);                
         break;
     case 'generate':
         $params = $this->params()->fromQuery();
