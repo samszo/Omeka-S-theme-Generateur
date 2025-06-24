@@ -2,9 +2,6 @@
 $export = $this->params()->fromQuery('export', '');
 $action = $this->params()->fromQuery('action', '');
 if($export=="csv"){
-    //header('Expires: 0');  
-    //header('Cache-Control: no-cache');    
-    header("Content-disposition: attachment; filename=".$action.".csv");
     header('Content-type: text/csv; charset=utf-8');
 }else
     header('Content-Type: application/json; charset=utf-8');
@@ -18,9 +15,10 @@ switch ($helper) {
     case 'sql':
         $params = $this->params()->fromQuery();
         $rs = $this->GenerateurSql($params);
-        if($export=="csv")
-            echo $rs;                
-        else
+        if($export=="csv"){
+            header("Content-disposition: attachment; filename=".$rs['fileName']);
+            echo $rs['csv'];                
+        }else
             echo $this->json($rs);                
         break;
     case 'generate':
