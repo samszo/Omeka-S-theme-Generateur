@@ -24,7 +24,8 @@ switch ($helper) {
     case 'generate':
         $params = $this->params()->fromQuery();
         $m = $this->MoteurFactory(true,true);
-        echo $this->json($m->genereConcept($params));                
+        $rs = $m->genereConcept($params);
+        echo $params['structure'] ? $this->json($rs) : $rs;                
         break;
     }
 
